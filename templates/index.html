@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>About Me</h1>
+    <p>Welcome to my interactive resume!</p>
+    
+    <div>
+        <label for="question">Ask me anything:</label>
+        <input type="text" id="question" name="question">
+        <button onclick="askQuestion()">Ask</button>
+    </div>
+    
+    <div id="answer"></div>
+    
+    <script>
+        function askQuestion() {
+            var question = document.getElementById('question').value;
+            fetch('/answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({question: question})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answer').innerText = data.answer;
+            });
+        }
+    </script>
+</body>
+</html>
